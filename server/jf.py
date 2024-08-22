@@ -1,3 +1,5 @@
+import string
+
 import psycopg2
 
 class PostgresDict:
@@ -6,8 +8,8 @@ class PostgresDict:
             self.conn = psycopg2.connect(
                 dbname="jobs",
                 user="postgres",
-                password="",
-                host="",
+                password="new_password",
+                host="172.21.12.39",
                 port="5432"
             )
             print("Connection successful")
@@ -18,19 +20,21 @@ class PostgresDict:
 
     def __getitem__(self, key):
         with self.conn.cursor() as cur:
-            cur.execute(f"SELECT * FROM {self.table_name} WHERE key = %s", (key,))
+            cur.execute(f"SELECT company, title FROM {self.table_name} WHERE key = %s", (key,))
             result = cur.fetchone()
             if result is None:
                 raise KeyError(key)
-            return result
+            company, title = result
+            return JobEntry(title=title, company=company)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value: 'JobEntry'):
         with self.conn.cursor() as cur:
             cur.execute(f"""
-            INSERT INTO {self.table_name} (key, value)
-            VALUES (%s, %s)
-            ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value
-            """, (key, value))
+            INSERT INTO {self.table_name} (key, company, title)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (key) DO UPDATE 
+            SET company = EXCLUDED.company, title = EXCLUDED.title
+            """, (key, value.company, value.title))
             self.conn.commit()
 
     def __delitem__(self, key):
@@ -45,19 +49,19 @@ class PostgresDict:
 
     def items(self):
         with self.conn.cursor() as cur:
-            cur.execute(f"SELECT key, value FROM {self.table_name}")
+            cur.execute(f"SELECT key, company, title FROM {self.table_name}")
             return cur.fetchall()
 
     def close(self):
         self.conn.close()
 
 class JobEntry:
-    def __init__(self, title: str, company: str) -> None:
+    def __init__(self, company: str, title: str) -> None:
         self.title = title
         self.company = company
 
 class JobFolder:
-    def __init__(self, source="finance_jobs.sqlite") -> None:
+    def __init__(self) -> None:
         self.__db = PostgresDict('finance_jobs')
 
     def __enter__(self):

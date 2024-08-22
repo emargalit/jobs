@@ -1,9 +1,14 @@
+import os
 from flask import Flask, current_app
 from api import api
 from jf import JobFolder
+from flask import send_from_directory
 app = Flask(__name__)
 app.register_blueprint(api)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 @app.route('/')
 def start_app():
     if not hasattr(app, "jf"):
