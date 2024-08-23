@@ -6,10 +6,9 @@ from jf import JobEntry
 api = Blueprint("api", __name__, template_folder="templates")
 
 KEY_DOES_NOT_EXIST = "Key %s does not exist!"
-NO_ACCESS_TO_ENTRY = "Cannot access the content associated with key %s. Owned by other user!"
 NO_COMPANY_IN_REQUEST_BODY = "No 'company' in request body. The request must provide the company!"
 NO_TITLE_IN_REQUEST_BODY = "No 'title' in request body. The request must provide the title!"
-PUT_SUCCESS = "Successfully added the content."
+PUT_SUCCESS = "Successfully added the new job ad."
 
 # Response status
 OK = http.client.OK                   # 200

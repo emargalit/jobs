@@ -8,7 +8,7 @@ class PostgresDict:
             self.conn = psycopg2.connect(
                 dbname="jobs",
                 user="postgres",
-                password="new_password",
+                password="",
                 host="172.21.12.39",
                 port="5432"
             )
