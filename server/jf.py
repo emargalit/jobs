@@ -83,10 +83,10 @@ class JobFolder:
 
     def remove(self, key: str) -> JobEntry or None:
         if key in self.__db:
-            value = self.__db[key]
+            job_entry = self.__db[key]
             del self.__db[key]
             self.__db.conn.commit()
-            return value
+            return job_entry
         else:
             return None
 

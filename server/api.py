@@ -44,3 +44,20 @@ def put(key):
     entry = JobEntry(company, title)
     if jf.put(key, entry):
         return Response(PUT_SUCCESS, OK)
+
+@api.route("/remove/<key>", methods=["DELETE"])
+def remove(key):
+    try:
+        jf = current_app.jf
+
+        job_entry = jf.get(key)
+
+        if job_entry is None:
+            return Response(KEY_DOES_NOT_EXIST % key, NOT_FOUND)
+
+        if jf.remove(key) is not None:
+            return make_response(job_entry.company, 200)
+
+        return Response(KEY_DOES_NOT_EXIST % key, NOT_FOUND)
+    except Exception as e:
+        return Response(str(e), status=500)
