@@ -27,7 +27,7 @@ def get(key):
         return Response(KEY_DOES_NOT_EXIST % (key), NOT_FOUND)
 
     # Return the file content with a status of OK
-    return make_response(job_content.company, 200)
+    return jsonify(job_content), 200
 
 @api.route("/jobs", methods=["GET"])
 def get_all():
@@ -40,7 +40,7 @@ def get_all():
         return Response(NO_COMPANIES_FOUND, NOT_FOUND)
 
     # Return the file content with a status of OK
-    return make_response(job_contents, 200)
+    return jsonify(job_contents), 200
 
 @api.route("/insert/<key>", methods=["POST"])
 def put(key):
@@ -56,6 +56,7 @@ def put(key):
     company = request_body['company']
     title = request_body['title']
     entry = JobEntry(company, title)
+
     if jf.put(key, entry):
         return Response(PUT_SUCCESS, OK)
 

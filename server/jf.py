@@ -77,7 +77,7 @@ class JobFolder:
 
     def get(self, key: str) -> JobEntry or None:
         if key in self.__db:
-            return self.__db[key]
+            return self.__db[key].company, self.__db[key].title
         else:
             return None
 
