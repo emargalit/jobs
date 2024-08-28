@@ -91,7 +91,7 @@ class JobFolder:
             return None
 
     def job_items(self):
-        return [(key, value) for key, value in self.__db.items()]
+        return [(key, company, title) for key, company, title in self.__db.items()]
 
     def close(self) -> None:
         self.__db.close()
