@@ -16,7 +16,7 @@ OK = http.client.OK                   # 200
 BAD_REQUEST = http.client.BAD_REQUEST  # 400
 NOT_FOUND = http.client.NOT_FOUND     # 404
 
-@api.route("/<key>", methods=["GET"])
+@api.route("/jobs/<key>", methods=["GET"])
 def get(key):
     # request_body = request.json
     jf = current_app.jf
