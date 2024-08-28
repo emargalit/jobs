@@ -26,7 +26,7 @@ def get(key):
     if job_content is None:
         return Response(KEY_DOES_NOT_EXIST % (key), NOT_FOUND)
 
-    # Return the file content with a status of OK
+    # Return the job with a status of OK
     return jsonify(job_content), 200
 
 @api.route("/jobs", methods=["GET"])
@@ -39,7 +39,7 @@ def get_all():
     if job_contents is None:
         return Response(NO_COMPANIES_FOUND, NOT_FOUND)
 
-    # Return the file content with a status of OK
+    # Return all jobs with a status of OK
     return jsonify(job_contents), 200
 
 @api.route("/insert/<key>", methods=["POST"])
